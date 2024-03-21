@@ -1,0 +1,30 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: student-microservice
+          uri: lb://student-service
+          predicates:
+            - Path=/student-service/**
+          filters:
+            - StripPrefix=1
+        - id: course-microservice
+          uri: lb://course-service
+          predicates:
+            - Path=/course-service/**
+          filters:
+            - StripPrefix=1
+        - id: enrollment-microservice
+          uri: lb://enrollment-service
+          predicates:
+            - Path=/enrollment-service/**
+          filters:
+            - StripPrefix=1
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
